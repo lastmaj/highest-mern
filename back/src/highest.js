@@ -43,6 +43,7 @@ const getMax = (leagueId, page) => {
       results = await standings.results;
       resolve(
         results.map(r => ({
+          id: r.id,
           name: r.entry_name,
           points: r.event_total,
           url: `https://fantasy.premierleague.com/entry/${r.entry}/history`
