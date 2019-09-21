@@ -1,15 +1,17 @@
 import React, { Component } from "react";
+import Loader from "./Loader";
+import Winners from "./Winners";
+
 import axios from "axios";
 import "./App.css";
 import logo from "./logo.svg";
-import ThemeProvider from "./ThemeProvider";
-import { Box, Button } from "rebass";
-import { Label, Input } from "@rebass/forms";
 
 class App extends Component {
   state = {
     status: "",
-    id: null
+    id: null,
+    loading: false,
+    winners: []
   };
 
   //helper function for handleSubmit
@@ -22,7 +24,7 @@ class App extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    this.setState({ status: "entering the void" });
+    this.setState({ status: "entering the void", loading: true });
     let page = 1;
     let maxs = [];
     let start = new Date().getTime();
@@ -58,8 +60,20 @@ class App extends Component {
     let end = new Date().getTime();
     let time = end - start;
     console.log("Execution time: " + time / 1000 + "s");
-    console.log(winners.flat());
-    this.setState({ status: "All is Well" });
+    this.setState({ status: "Data is ready" });
+    setTimeout(() => {
+      this.setState({
+        loading: false,
+        status: `execution time: ${time / 1000}s`,
+        winners: winners.flat()
+      });
+    }, 1000);
+
+    setTimeout(() => {
+      this.setState({
+        status: null
+      });
+    }, 5000);
   };
 
   handleChange = e => {
@@ -68,30 +82,40 @@ class App extends Component {
 
   render() {
     return (
-      <ThemeProvider>
-        <div className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="Logo"></img>
-            <form onSubmit={this.handleSubmit}>
-              <label>
-                League id:
-                <inputcd
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="Logo"></img>
+          <form onSubmit={this.handleSubmit}>
+            <div className="grid">
+              <div>
+                <input
                   type="text"
                   value={this.state.id || ""}
                   onChange={this.handleChange}
+                  id="id"
+                  name="id"
+                  placeholder="League ID"
                 />
-              </label>
-              <input type="submit" value="Submit" />
-              <Box>
-                <Label htmlFor="email">Email</Label>
-                <Input id="id" name="id" placeholder="5828" />
-                <Button>Beep</Button>
-              </Box>
-            </form>
-            <p>{this.state.status}</p>
-          </header>
-        </div>
-      </ThemeProvider>
+              </div>
+              <div>
+                <button type="submit" value="submit">
+                  Go!
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <div className="loader-div">
+            {this.state.loading ? <Loader></Loader> : null}
+          </div>
+          <div className="status">{this.state.status}</div>
+          <div className="winners">
+            {this.state.winners.length !== 0 ? (
+              <Winners data={this.state.winners}></Winners>
+            ) : null}
+          </div>
+        </header>
+      </div>
     );
   }
 }

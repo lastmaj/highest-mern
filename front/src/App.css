@@ -22,3 +22,98 @@
 .App-link {
   color: #38003c;
 }
+
+.grid {
+  display: grid;
+  height: 50px;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 100px;
+  column-gap: 5px;
+}
+
+.grid button {
+  height: 50%;
+  box-sizing: border-box;
+  min-width: 0px;
+  width: 80%;
+  box-sizing: border-box;
+  display: inline-block;
+  text-align: center;
+  line-height: inherit;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  background-color: #38003c;
+  border-color: transparent;
+  color: #00ff85;
+  border-radius: 4px;
+}
+
+.grid input {
+  height: 50%;
+  box-sizing: border-box;
+  min-width: 0px;
+  width: 80%;
+  box-sizing: border-box;
+  display: inline-block;
+  line-height: inherit;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  background-color: transparent;
+  border-color: transparent;
+  color: #38003c;
+  border: 1px solid #38003c;
+  border-radius: 4px;
+}
+
+input:focus {
+  box-shadow: 0 0 0 2px #38003c !important;
+  outline: none;
+}
+
+.status {
+  height: 20px;
+  font-size: 13px;
+}
+
+.loader-div {
+  margin-top: 25px;
+  height: 40px;
+  width: 40px;
+}
+
+.winners {
+  position: absolute;
+  top: 475px;
+  font-size: 20px;
+}
+
+.winners-table {
+  text-align: center;
+  border-collapse: collapse;
+  border-bottom: 1px solid #38003c;
+  width: 100%;
+}
+
+.winners-table td {
+  padding: 8px;
+  border-bottom: 1px solid #38003c;
+}
+
+.winners-table tr:hover {
+  background-color: #04f5ff;
+}
+
+.winners-table th {
+  background-color: #018f4a;
+  height: 17px;
+  width: 250px;
+  font-size: 10px;
+  color: #00ff85;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
