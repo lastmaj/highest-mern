@@ -35,7 +35,7 @@ class App extends Component {
 
     //if there are results, carry on
     while (results.length !== 0) {
-      this.setState({ status: `Reading page no: ${page}` });
+      this.setState({ status: `Reading page no: ${page}`, winners: [] });
       let pageMax = this.getMaxFromPage(await results);
       maxs.push(pageMax);
       //make the next request
@@ -63,9 +63,9 @@ class App extends Component {
     this.setState({ status: "Data is ready" });
     setTimeout(() => {
       this.setState({
-        loading: false,
         status: `execution time: ${time / 1000}s`,
-        winners: winners.flat()
+        winners: winners.flat(),
+        loading: false
       });
     }, 1000);
 
@@ -98,7 +98,12 @@ class App extends Component {
                 />
               </div>
               <div>
-                <button type="submit" value="submit">
+                <button
+                  type="submit"
+                  value="submit"
+                  disabled={this.state.loading}
+                  className={this.state.loading ? "clicked" : "normal"}
+                >
                   Go!
                 </button>
               </div>
