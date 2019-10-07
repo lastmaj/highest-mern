@@ -23,34 +23,23 @@ const createSession = async () => {
   axiosInstace.defaults.headers.Cookie = cookie;
 };
 
-//get the max standing from a standings page
-const getMaxFromPage = results => {
-  const maxPoints = results.reduce((prev, curr) =>
-    prev.event_total > curr.event_total ? prev : curr
-  )["event_total"];
-  return results.filter(r => r.event_total === maxPoints);
-};
-
 //post a request for standings then return the max on that page
-const getMax = (leagueId, page) => {
-  return new Promise(resolve => {
-    createSession().then(async () => {
-      //1st request is always made
-      firstRes = await axiosInstace.get(
-        `https://fantasy.premierleague.com/api/leagues-classic/${leagueId}/standings/?page_new_entries=1&page_standings=${page}&phase=1`
-      );
-      standings = await firstRes.data.standings;
-      results = await standings.results;
-      resolve(
-        results.map(r => ({
-          id: r.id,
-          name: r.entry_name,
-          points: r.event_total,
-          url: `https://fantasy.premierleague.com/entry/${r.entry}/history`
-        }))
-      );
-    });
-  });
+const getMax = async (leagueId, page) => {
+  createSession();
+
+  firstRes = await axiosInstace.get(
+    `https://fantasy.premierleague.com/api/leagues-classic/${leagueId}/standings/?page_new_entries=1&page_standings=${page}&phase=1`
+  );
+
+  //throw new Error(400);
+  standings = await firstRes.data.standings;
+  results = await standings.results;
+  return results.map(r => ({
+    id: r.id,
+    name: r.entry_name,
+    points: r.event_total,
+    url: `https://fantasy.premierleague.com/entry/${r.entry}/history`
+  }));
 };
 
 module.exports = getMax;

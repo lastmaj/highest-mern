@@ -20,11 +20,16 @@ app.get("/:id", async (req, res, next) => {
 });
 
 //request league page
+//2nd way to error handle; try catch blocks
+//could have used the default express error handler (ex: /:id route)
 app.get("/:id/:page", async (req, res) => {
   res.header("Content-Type", "application/json");
-  res.send(
-    JSON.stringify(await highest(req.params.id, req.params.page), null, 4)
-  );
+  try {
+    const result = await highest(req.params.id, req.params.page);
+    res.send(JSON.stringify(result));
+  } catch (err) {
+    res.status(err.response.status).send(err.response.statusText);
+  }
 });
 
 //capture the annoying favicon.ico request
