@@ -27,9 +27,13 @@ const createSession = async () => {
 const getMax = async (leagueId, page) => {
   createSession();
 
-  firstRes = await axiosInstace.get(
-    `https://fantasy.premierleague.com/api/leagues-classic/${leagueId}/standings/?page_new_entries=1&page_standings=${page}&phase=1`
-  );
+  try {
+    firstRes = await axiosInstace.get(
+      `https://fantasy.premierleague.com/api/leagues-classic/${leagueId}/standings/?page_new_entries=1&page_standings=${page}&phase=1`
+    );
+  } catch (error) {
+    throw error;
+  }
 
   //throw new Error(400);
   standings = await firstRes.data.standings;
