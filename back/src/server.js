@@ -19,13 +19,15 @@ app.get("/", (_, res) => {
     .catch(err => next(err));
 });
 */
+
 //request league page
 //2nd way to error handle; try catch blocks
 //could have used the default express error handler (ex: /:id route)
-app.get("/:id/:page", async (req, res) => {
+app.get("/:id", async (req, res) => {
+  req.setTimeout(0);
   res.header("Content-Type", "application/json");
   try {
-    const result = await highest(req.params.id, req.params.page);
+    const result = await highest(req.params.id);
     res.send(JSON.stringify(result));
   } catch (err) {
     res.status(err.response.status).send(err.response.statusText);
