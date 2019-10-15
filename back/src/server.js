@@ -12,13 +12,13 @@ app.get("/", (_, res) => {
 });
 
 //request number of pages in a league
-app.get("/:id", async (req, res, next) => {
+/*app.get("/:id", async (req, res, next) => {
   res.header("Content-Type", "application/json");
   pages(req.params.id)
     .then(pages => res.send(pages))
     .catch(err => next(err));
 });
-
+*/
 //request league page
 //2nd way to error handle; try catch blocks
 //could have used the default express error handler (ex: /:id route)
