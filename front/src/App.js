@@ -24,56 +24,21 @@ class App extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    this.setState({ status: "entering the void", loading: true });
-    let page = 1;
-    let maxs = [];
-    let start = new Date().getTime();
-    const leagueId = this.state.id;
-    //1st request is always made
-    let firstRes = await axios.get(`http://localhost:4000/${leagueId}/${page}`);
-    let results = firstRes.data;
+    this.setState({ status: "Fetching Results", loading: true });
 
-    //if there are results, carry on
-    while (results.length !== 0) {
-      this.setState({ status: `Reading page no: ${page}`, winners: [] });
-      let pageMax = this.getMaxFromPage(await results);
-      maxs.push(pageMax);
-      //make the next request
-      page++;
-      let res = await axios.get(`http://localhost:4000/${leagueId}/${page}`);
-      results = await res.data;
+    try {
+      let firstRes = await axios.get(`http://localhost:4000/${this.state.id}`);
+      this.setState({ status: "Fetching Winners" });
+      setTimeout(() => {
+        this.setState({
+          status: `execution time: ${firstRes.data.execution_time}`,
+          winners: firstRes.data.winners.flat(),
+          loading: false
+        });
+      }, 1000);
+    } catch (err) {
+      this.setState({ status: "League not found !", loading: false });
     }
-
-    //helper array
-    const winners = [];
-    const helperArray = maxs.map(x => x[0]["points"]);
-    const globalMax = Math.max(...helperArray);
-
-    //iterate through maxs and helperArray
-    let index = helperArray.indexOf(globalMax);
-    while (index !== -1) {
-      winners.push(maxs[index]);
-      index = helperArray.indexOf(globalMax, index + 1);
-    }
-
-    //display time
-    let end = new Date().getTime();
-    let time = end - start;
-    console.log("Execution time: " + time / 1000 + "s");
-    this.setState({ status: "Data is ready" });
-    setTimeout(() => {
-      this.setState({
-        status: `execution time: ${time / 1000}s`,
-        winners: winners.flat(),
-        loading: false
-      });
-    }, 1000);
-
-    setTimeout(() => {
-      this.setState({
-        status: null
-      });
-    }, 5000);
   };
 
   handleChange = e => {
