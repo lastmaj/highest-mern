@@ -14,20 +14,12 @@ class App extends Component {
     winners: []
   };
 
-  //helper function for handleSubmit
-  getMaxFromPage = results => {
-    const maxPoints = results.reduce((prev, curr) =>
-      prev.points > curr.points ? prev : curr
-    )["points"];
-    return results.filter(r => r.points === maxPoints);
-  };
-
   handleSubmit = async e => {
     e.preventDefault();
     this.setState({ status: "Fetching Results", loading: true });
 
     try {
-      let firstRes = await axios.get(`http://localhost:4000/${this.state.id}`);
+      let firstRes = await axios.get(`/${this.state.id}`);
       this.setState({ status: "Fetching Winners" });
       setTimeout(() => {
         this.setState({
