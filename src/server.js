@@ -1,15 +1,8 @@
-const express = require('express');
-const highest = require('./highest.js');
-const pages = require('./pages.js');
-const cors = require('cors');
+const express = require('express'),
+  highest = require('./highest.js'),
+  path = require('path');
 
 const app = express();
-app.use(cors());
-
-//landing page
-app.get('/', (_, res) => {
-  res.send('Hello World');
-});
 
 //request number of pages in a league
 /*app.get("/:id", async (req, res, next) => {
@@ -43,18 +36,23 @@ app.use((err, req, res, next) => {
   res.status(err.response.status).send(err.response.statusText);
 });
 
-//uses the express static middleware to grab the build folder
-//when react is built, the app is going to be in the indicated folder
-
+//prod environment
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
+  //uses the express static middleware to grab the build folder
+  //when react is built, the app is going to be in the indicated folder
+  app.use(express.static(path.resolve(__dirname, '../client/build')));
 
   //SPA: always return the index.html
   //check what the first part means though
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'));
   });
 }
+
+//landing page
+app.get('/', (_, res) => {
+  res.send('Hello World');
+});
 
 const PORT = process.env.PORT || 4000;
 
