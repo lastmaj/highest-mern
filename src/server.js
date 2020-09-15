@@ -1,15 +1,11 @@
 const express = require('express');
 const highest = require('./highest.js');
 const pages = require('./pages.js');
+const path = require('path');
 const cors = require('cors');
 
 const app = express();
 app.use(cors());
-
-//landing page
-app.get('/', (_, res) => {
-  res.send('Hello World');
-});
 
 //request number of pages in a league
 /*app.get("/:id", async (req, res, next) => {
@@ -45,18 +41,20 @@ app.use((err, req, res, next) => {
 
 //uses the express static middleware to grab the build folder
 //when react is built, the app is going to be in the indicated folder
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
-
-  //SPA: always return the index.html
-  //check what the first part means though
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
+//SPA: always return the index.html
+//check what the first part means though
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'));
+});
 
 const PORT = process.env.PORT || 4000;
+
+//landing page
+app.get('/', (_, res) => {
+  res.send('Hello World');
+});
 
 app.listen(PORT, () => {
   console.log('server is running on 4000');
