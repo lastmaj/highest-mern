@@ -5,18 +5,11 @@
   "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./src/server.js",
-    "server": "node ./src/server.js",
+    "start": "node start --prefix src",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "npm install --prefix client && npm run build --prefix client"
   },
   "author": "maj",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^0.19.0",
-    "concurrently": "^5.0.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1"
-  }
+  "license": "ISC"
 }
