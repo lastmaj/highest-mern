@@ -4,15 +4,6 @@ const express = require('express'),
 
 const app = express();
 
-//request number of pages in a league
-/*app.get("/:id", async (req, res, next) => {
-  res.header("Content-Type", "application/json");
-  pages(req.params.id)
-    .then(pages => res.send(pages))
-    .catch(err => next(err));
-});
-*/
-
 //request league page
 //2nd way to error handle; try catch blocks
 //could have used the default express error handler (ex: /:id route)
@@ -23,7 +14,7 @@ app.get('/:id', async (req, res) => {
     const result = await highest(req.params.id);
     res.send(JSON.stringify(result));
   } catch (err) {
-    res.status(err.response.status).send(err.response.statusText);
+    res.send(err);
   }
 });
 
