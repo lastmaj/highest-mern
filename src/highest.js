@@ -1,23 +1,9 @@
 const rp = require('request-promise');
 
-//implement array.flat()
-Object.defineProperty(Array.prototype, 'flat', {
-  value: function (depth = 1) {
-    return this.reduce(function (flat, toFlatten) {
-      return flat.concat(
-        Array.isArray(toFlatten) && depth > 1
-          ? toFlatten.flat(depth - 1)
-          : toFlatten
-      );
-    }, []);
-  },
-});
-
 //post a request for standings then return the max on that page
 const getMax = async (leagueId) => {
   //initialization
   let page = 1;
-  let maxs = [];
   let start = new Date().getTime();
 
   const options = {
@@ -79,7 +65,7 @@ const getMax = async (leagueId) => {
   let end = new Date().getTime();
   let time = end - start;
   console.log('Execution time: ' + time / 1000 + 's');
-  const a = winners.flat().map((w) => ({
+  const a = winners.map((w) => ({
     name: w.entry_name,
     points: w.event_total,
     url: `https://fantasy.premierleague.com/entry/${w.entry}/history`,
@@ -89,10 +75,7 @@ const getMax = async (leagueId) => {
     execution_time: time / 1000 + ' s',
     league_total_pages: page - 1,
   };
-  console.log(result);
   return result;
 };
-
-getMax(635004);
 
 module.exports = getMax;
